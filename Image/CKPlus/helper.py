@@ -3,11 +3,18 @@ import os
 import numpy as np
 from dataset_organizer import CKPlusOrganizer
 
-
 class CKLoader:
 
     def __init__(self):
         try:
+            flag=1
+            for r,d,_ in os.walk("sorted_set/"):
+                if len(d)==8:
+                    flag=0
+                    break
+            if flag:
+                z = CKPlusOrganizer()
+                z.make_structure() 
             target_class = os.listdir("sorted_set")
             self.images = {}
             self.preprocessing_tasks = [
@@ -159,9 +166,7 @@ class CKLoader:
 
 with tf.Session() as sess:
 
-    # Create a CKLoader Object
-    z = CKPlusOrganizer()
-    z.make_structure()
+# Create a CKLoader Object
     x = CKLoader()
 # Default parameters of Format_data(train_test_split=0.8, normalized_test_split=False,
 #                                     shuffle=False, channels=1, img_dims=[32,32], batch_size=128)
