@@ -1,6 +1,7 @@
 import tensorflow as tf
 import os
 import numpy as np
+from dataset_organizer import CKPlusOrganizer
 
 
 class CKLoader:
@@ -159,6 +160,8 @@ class CKLoader:
 with tf.Session() as sess:
 
     # Create a CKLoader Object
+    z = CKPlusOrganizer()
+    z.make_structure()
     x = CKLoader()
 # Default parameters of Format_data(train_test_split=0.8, normalized_test_split=False,
 #                                     shuffle=False, channels=1, img_dims=[32,32], batch_size=128)
