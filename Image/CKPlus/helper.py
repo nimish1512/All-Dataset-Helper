@@ -163,7 +163,7 @@ class CKLoader:
         except Exception as e:
             print(e)
 
-
+'''
 with tf.Session() as sess:
 
 # Create a CKLoader Object
@@ -182,3 +182,4 @@ with tf.Session() as sess:
 
         except Exception as e:
             break
+'''
