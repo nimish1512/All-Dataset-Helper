@@ -175,11 +175,10 @@ with tf.Session() as sess:
 #                                    'random_flip_horizontal' ,'RGB2GRAY', 'GRAY2RGB', ,'Adjust_brightness'])
 
     x.format_data(preprocess=['random_flip_vertical', 'Adjust_brightness'])
-    i = 1
     while True:
         try:
             # Fetch new Batch of training samples
-            batch_x = sess.run(x.train_next_batch)
+            x,y = sess.run(x.train_next_batch)
 
         except Exception as e:
             break
