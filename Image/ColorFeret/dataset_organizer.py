@@ -28,9 +28,10 @@ class TaskParser:
 
     def read_mono_data(self):
         if self.task=='gender':
-            if not os.path.exists(self.dataset_path+'/male'):
-                os.makedirs(self.dataset_path+'/male')
-                os.makedirs(self.dataset_path+'/female')
+            if not os.path.exists(self.dataset_path+'/gender/male'):
+                os.makedirs(self.dataset_path+'/gender')
+                os.makedirs(self.dataset_path+'/gender/male')
+                os.makedirs(self.dataset_path+'/gender/female')
             male_samples = list()
             female_samples = list()
             for k,v in self.data.items():
@@ -51,37 +52,86 @@ class TaskParser:
                         for f in files:
                             if f[-4:]==".ppm":
                                 sys.stdout.flush()
-                                shutil.copyfile(self.tar_path+'/'+sample+'/'+f,self.pwd+'/dataset/female/'+f)
-                                sys.stdout.write("Copying file %s to /dataset/female          \r"%(f))
+                                shutil.copyfile(self.tar_path+'/'+sample+'/'+f,self.pwd+'/dataset/gender/female/'+f)
+                                sys.stdout.write("Copying file %s to /dataset/gender/female          \r"%(f))
 
                 for sample in male_samples:
                     for _,_,files in os.walk(self.tar_path+'/'+sample):
                         for f in files:
                             if f[-4:]==".ppm":
                                 sys.stdout.flush()
-                                shutil.copyfile(self.tar_path+'/'+sample+'/'+f,self.pwd+'/dataset/male/'+f)
-                                sys.stdout.write("Copying file %s to /dataset/male            \r"%(f))
+                                shutil.copyfile(self.tar_path+'/'+sample+'/'+f,self.pwd+'/dataset/gender/male/'+f)
+                                sys.stdout.write("Copying file %s to /dataset/gender/male            \r"%(f))
             else:
                 for sample in female_samples:
                     for _,_,files in os.walk(self.tar_path+'/'+sample):
                         for f in files:
                             if f[-4:]==".ppm":
                                 sys.stdout.flush()
-                                os.rename(self.tar_path+'/'+sample+'/'+f,self.pwd+'/dataset/female/'+f)
-                                sys.stdout.write("Moving file %s to /dataset/female           \r"%(f))
+                                os.rename(self.tar_path+'/'+sample+'/'+f,self.pwd+'/dataset/gender/female/'+f)
+                                sys.stdout.write("Moving file %s to /dataset/gender/female           \r"%(f))
 
                 for sample in male_samples:
                     for _,_,files in os.walk(self.tar_path+'/'+sample):
                         for f in files:
                             if f[-4:]==".ppm":
                                 sys.stdout.flush()
-                                os.rename(self.tar_path+'/'+sample+'/'+f,self.pwd+'/dataset/male/'+f)
-                                sys.stdout.write("Moving file %s to /dataset/male             \r"%(f))
+                                os.rename(self.tar_path+'/'+sample+'/'+f,self.pwd+'/dataset/gender/male/'+f)
+                                sys.stdout.write("Moving file %s to /dataset/gender/male             \r"%(f))
             sys.stdout.flush()
+        elif self.task=="sunglass":
+            if not os.path.exists(self.dataset_path+'/sunglass/sunglass_on'):
+                os.makedirs(self.dataset_path+'/sunglass')
+                os.makedirs(self.dataset_path+'/sunglass/sunglass_on')
+                os.makedirs(self.dataset_path+'/sunglass/sunglass_off')
+            s_on_samples = list()
+            s_off_samples = list()
+            for k,v in self.data.items():
+                for file in v:
+                    if file!=k+".txt":
+                        fp = open(self.path+'/'+k+'/'+file)
+                        for i,line in enumerate(fp):
+                            if i==13:
+                                temp = line.split('=')
+                                temp1 = ""
+                                if temp[-1]=='Yes\n':
+                                    s_on_samples.append(file[:-4]+'.ppm')
+                                elif temp[-1]=="No\n":
+                                    s_off_samples.append(file[:-4]+'.ppm')
+                                del temp1
+                        fp.close()
+            print("Found {0} Sunglass_on samples\nFound {1} Sunglass_off samples".format(len(s_on_samples),len(s_off_samples)))
+            del_opt = input("Before copying images to target_class folders, do you wish to delete original images?\nType 'y' to delete and 'n' to keep them ==> ")
+            print("\n\n")
+            if del_opt.lower()=='n':
+                for sample in s_off_samples:
+                    folder_name = sample.split('_')
+                    folder_name = folder_name[0]
+                    sys.stdout.flush()
+                    shutil.copyfile(self.tar_path+'/'+folder_name+'/'+sample,self.pwd+'/dataset/sunglass/sunglass_off/'+sample)
+                    sys.stdout.write("Copying file %s to /dataset/sunglass/sunglass_off          \r"%(sample))                    
 
+                for sample in s_on_samples:
+                    folder_name = sample.split('_')
+                    folder_name = folder_name[0]
+                    sys.stdout.flush()
+                    shutil.copyfile(self.tar_path+'/'+folder_name+'/'+sample,self.pwd+'/dataset/sunglass/sunglass_on/'+sample)
+                    sys.stdout.write("Copying file %s to /dataset/sunglass/sunglass_on          \r"%(sample))
+            elif del_opt.lower()=='y':
+                for sample in s_off_samples:
+                    folder_name = sample.split('_')
+                    folder_name = folder_name[0]
+                    sys.stdout.flush()
+                    os.rename(self.tar_path+'/'+folder_name+'/'+sample,self.pwd+'/dataset/sunglass/sunglass_off/'+sample)
+                    sys.stdout.write("Copying file %s to /dataset/sunglass/sunglass_off          \r"%(sample))                    
 
-
-
+                for sample in s_on_samples:
+                    folder_name = sample.split('_')
+                    folder_name = folder_name[0]
+                    sys.stdout.flush()
+                    os.rename(self.tar_path+'/'+folder_name+'/'+sample,self.pwd+'/dataset/sunglass/sunglass_on/'+sample)
+                    sys.stdout.write("Copying file %s to /dataset/sunglass/sunglass_on          \r"%(sample))
+            sys.stdout.flush()
 
 
 
