@@ -63,9 +63,8 @@ with tf.Session() as sess:
   x = CKLoader()
   x.format_data(preprocess=['random_flip_vertical','random_flip_horizontal' ,'RGB2GRAY', 'GRAY2RGB', ,'Adjust_brightness']])
   while True:
-    batch_x = sess.run(x.train_next_batch())
+    batch_x = sess.run(x.train_next_batch)
     x,y = batch_x
-    result = sess.run(trainer, feed_dict={X:x,Y:y})
 ```
 ## Built With
 
