@@ -61,7 +61,7 @@ Simply copy-paste this snippet and add other stuff to this as per needed.
 ```
 with tf.Session() as sess:
   g = CKLoader()
-  g.format_data(preprocess=['random_flip_vertical','random_flip_horizontal' ,'RGB2GRAY', 'GRAY2RGB', ,'Adjust_brightness']])
+  g.format_data(preprocess=['random_flip_vertical','random_flip_horizontal' ,'RGB2GRAY', 'GRAY2RGB', 'Adjust_brightness']])
   while True:
     x,y = sess.run(g.train_next_batch)
 ```
