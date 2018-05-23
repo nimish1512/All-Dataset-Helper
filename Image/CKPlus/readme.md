@@ -60,11 +60,10 @@ The preprocess parameter takes a list of supported preprocessing techniques expl
 Simply copy-paste this snippet and add other stuff to this as per needed.
 ```
 with tf.Session() as sess:
-  x = CKLoader()
-  x.format_data(preprocess=['random_flip_vertical','random_flip_horizontal' ,'RGB2GRAY', 'GRAY2RGB', ,'Adjust_brightness']])
+  g = CKLoader()
+  g.format_data(preprocess=['random_flip_vertical','random_flip_horizontal' ,'RGB2GRAY', 'GRAY2RGB', ,'Adjust_brightness']])
   while True:
-    batch_x = sess.run(x.train_next_batch)
-    x,y = batch_x
+    x,y = sess.run(g.train_next_batch)
 ```
 ## Built With
 
